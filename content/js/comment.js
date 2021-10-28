@@ -7,9 +7,10 @@ const commentTextarea = document.getElementById('comment-textarea');
   })
 
 function validateForm () {
-  if (commentTextarea.value == '' || commentTextarea.value === null) {
+  if (commentTextarea.value === null || commentTextarea.value.trim() == '') {
     return false;
   } else {
+    addCommentInLocalStorage(commentTextarea.value);
     addUsersComment();
   }
 }
@@ -34,7 +35,12 @@ function addUsersComment () {
   
     let comment = document.createElement('p');
     comment.className = 'cmnt-p4';
-    comment.innerHTML = commentTextarea.value;
+    
+    if (localStorage.getItem('comment') !== String) {
+      comment.innerHTML = localStorage.getItem('comment');
+    } else {
+      comment.innerHTML = commentTextarea.value;
+    }
   
     comnt.appendChild(comment);
   
@@ -50,3 +56,19 @@ function addUsersComment () {
   
     comnt.appendChild(span);
 }
+
+function addCommentInLocalStorage (value) {
+  localStorage.setItem('comment', value);
+}
+
+function checkLocalStorage () {
+  let cat = localStorage.getItem('comment');
+  console.log(cat)
+  if (cat !== null) {
+    addUsersComment();
+  } else {
+    return false; 
+  }
+}
+
+checkLocalStorage();
